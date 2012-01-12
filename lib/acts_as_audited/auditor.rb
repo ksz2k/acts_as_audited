@@ -228,10 +228,10 @@ module ActsAsAudited
 
       def write_audit(attrs)
         attrs[:associated] = self.send(audit_associated_with) unless audit_associated_with.nil?
-        if self.has_attachment
+        #if self.has_attachment
           attrs[:attachment] = audit_attachment 
           self.audit_attachment = nil
-        end
+        #end
         self.audit_comment = nil
         self.audits.create attrs if auditing_enabled
       end
