@@ -76,13 +76,13 @@ module ActsAsAudited
         end
         
         
-        if options[:has_attached_file]
+        #if options[:has_attached_file]
           attr_accessor :audit_attachment
           unless accessible_attributes.empty? || options[:protect]
             attr_accessible :audit_attachment
           end            
-          self.has_attachment = true
-        end
+          self.has_attachment = Audit.has_attachment = options[:has_attached_file]
+        #end
 
         attr_accessor :audit_comment
         unless accessible_attributes.empty? || options[:protect]
