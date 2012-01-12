@@ -1,7 +1,7 @@
 require 'set'
 
-require 'rubygems'
-require 'paperclip'
+#require 'rubygems'
+#require 'paperclip'
   
    
 

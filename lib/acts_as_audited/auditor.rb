@@ -76,6 +76,14 @@ module ActsAsAudited
           end
           before_destroy :require_comment if !options[:on] || (options[:on] && options[:on].include?(:destroy))
         end
+        
+#        if options[:has_attached_file]
+#          attr_accessor :audit_attachment
+#          unless accessible_attributes.empty? || options[:protect]
+#            attr_accessible :audit_attachment
+#          end            
+#          self.has_attachment = Audit.has_attachment = true
+#        end
 
         attr_accessor :audit_comment
         unless accessible_attributes.empty? || options[:protect]
@@ -91,14 +99,6 @@ module ActsAsAudited
         before_destroy :audit_destroy if !options[:on] || (options[:on] && options[:on].include?(:destroy))
 
         attr_accessor :version
-        
-#        if options[:has_attached_file]
-#          attr_accessor :audit_attachment
-#          unless accessible_attributes.empty? || options[:protect]
-#            attr_accessible :audit_attachment
-#          end            
-#          self.has_attachment = Audit.has_attachment = true
-#        end
 
         extend ActsAsAudited::Auditor::SingletonMethods
         include ActsAsAudited::Auditor::InstanceMethods
