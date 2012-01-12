@@ -1,7 +1,7 @@
 require 'set'
 
-#require 'rubygems'
-#require 'paperclip'
+require 'rubygems'
+require 'paperclip'
   
    
 
@@ -21,11 +21,9 @@ class Audit < ActiveRecord::Base
 
   before_create :set_version_number, :set_audit_user
   
+  include Paperclip::Glue
+  has_attached_file :attachment 
   
-#  cattr_accessor :has_attachment
-#  include Paperclip::Glue
-#  has_attached_file :attachment #if self.has_attachment
-
   serialize :audited_changes
 
   cattr_accessor :audited_class_names

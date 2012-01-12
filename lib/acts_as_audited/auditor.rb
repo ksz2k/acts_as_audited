@@ -43,8 +43,6 @@ module ActsAsAudited
       #
       # * +has_attached_file+ - Attaches file with Paperclip when set to +true+
       #
-      # * +attached_file_options+ - Options to pass to Paperclip with +has_attached_file+
-      #
       #     class User < ActiveRecord::Base
       #       acts_as_audited :protect => false
       #       attr_accessible :name
@@ -78,13 +76,13 @@ module ActsAsAudited
         end
         
         
-#        if options[:has_attached_file]
-#          attr_accessor :audit_attachment
-#          unless accessible_attributes.empty? || options[:protect]
-#            attr_accessible :audit_attachment
-#          end            
-#          self.has_attachment = Audit.has_attachment = true
-#        end
+        if options[:has_attached_file]
+          attr_accessor :audit_attachment
+          unless accessible_attributes.empty? || options[:protect]
+            attr_accessible :audit_attachment
+          end            
+          self.has_attachment = true
+        end
 
         attr_accessor :audit_comment
         unless accessible_attributes.empty? || options[:protect]
@@ -229,10 +227,10 @@ module ActsAsAudited
 
       def write_audit(attrs)
         attrs[:associated] = self.send(audit_associated_with) unless audit_associated_with.nil?
-#        #if self.has_attachment
-#          attrs[:attachment] = audit_attachment 
-#          self.audit_attachment = nil
-#        #end
+        #if self.has_attachment
+          attrs[:attachment] = audit_attachment 
+          self.audit_attachment = nil
+        #end
         self.audit_comment = nil
         self.audits.create attrs if auditing_enabled
       end
