@@ -41,6 +41,10 @@ module ActsAsAudited
       # * +require_comment+ - Ensures that audit_comment is supplied before
       #   any create, update or destroy operation.
       #
+      # * +has_attached_file+ - Attaches file with Paperclip when set to +true+
+      #
+      # * +attached_file_options+ - Options to pass to Paperclip with +has_attached_file+
+      #
       #     class User < ActiveRecord::Base
       #       acts_as_audited :protect => false
       #       attr_accessible :name
@@ -55,6 +59,7 @@ module ActsAsAudited
         class_attribute :non_audited_columns, :instance_writer => false
         class_attribute :auditing_enabled, :instance_writer => false
         class_attribute :audit_associated_with, :instance_writer => false
+        class_attribute :has_attachment, :instance_writer => false
 
         if options[:only]
           except = self.column_names - options[:only].flatten.map(&:to_s)
@@ -67,7 +72,7 @@ module ActsAsAudited
 
         if options[:comment_required]
           if !options[:on] || (options[:on] && (options[:on].include?(:create) || options[:on].include?(:update)))
-            validates_presence_of :audit_comment, :if => :auditing_enabled
+            validates_presence_of :audit_comment, :if => :auditing_enabled, :on => options[:on]
           end
           before_destroy :require_comment if !options[:on] || (options[:on] && options[:on].include?(:destroy))
         end
@@ -86,6 +91,14 @@ module ActsAsAudited
         before_destroy :audit_destroy if !options[:on] || (options[:on] && options[:on].include?(:destroy))
 
         attr_accessor :version
+        
+        if options[:has_attached_file]
+          attr_accessor :audit_attachment
+          unless accessible_attributes.empty? || options[:protect]
+            attr_accessible :audit_attachment
+          end            
+          self.has_attachment = Audit.has_attachment = true
+        end
 
         extend ActsAsAudited::Auditor::SingletonMethods
         include ActsAsAudited::Auditor::InstanceMethods
@@ -215,6 +228,10 @@ module ActsAsAudited
 
       def write_audit(attrs)
         attrs[:associated] = self.send(audit_associated_with) unless audit_associated_with.nil?
+        if self.has_attachment
+          attrs[:attachment] = audit_attachment 
+          self.audit_attachment = nil
+        end
         self.audit_comment = nil
         self.audits.create attrs if auditing_enabled
       end
