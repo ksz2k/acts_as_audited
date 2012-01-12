@@ -24,7 +24,6 @@ class Audit < ActiveRecord::Base
 #  cattr_accessor :has_attachment
 #  include Paperclip::Glue
 #  has_attached_file :attachment #if self.has_attachment
-#  #attr_accessor :audit_attachment
 
   serialize :audited_changes
 
