@@ -21,10 +21,10 @@ class Audit < ActiveRecord::Base
 
   before_create :set_version_number, :set_audit_user
   
-  cattr_accessor :has_attachment
-  include Paperclip::Glue
-  has_attached_file :attachment #if self.has_attachment
-  #attr_accessor :audit_attachment
+#  cattr_accessor :has_attachment
+#  include Paperclip::Glue
+#  has_attached_file :attachment #if self.has_attachment
+#  #attr_accessor :audit_attachment
 
   serialize :audited_changes
 
