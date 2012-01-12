@@ -77,6 +77,7 @@ module ActsAsAudited
           before_destroy :require_comment if !options[:on] || (options[:on] && options[:on].include?(:destroy))
         end
         
+        
 #        if options[:has_attached_file]
 #          attr_accessor :audit_attachment
 #          unless accessible_attributes.empty? || options[:protect]
