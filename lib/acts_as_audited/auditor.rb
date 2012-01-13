@@ -217,6 +217,7 @@ module ActsAsAudited
         unless (changes = audited_changes).empty? && audit_comment.nil?
           write_audit(:action => 'update', :audited_changes => changes,
             :comment => audit_comment)
+          update_attributes(:updated_at=>Time.now)
         end
       end
 
