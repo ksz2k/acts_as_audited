@@ -218,7 +218,8 @@ module ActsAsAudited
           write_audit(:action => 'update', :audited_changes => changes,
             :comment => audit_comment)
           # TODO option for this..
-          update_attributes(:updated_at=>Time.now)
+          # XXX :zapętla
+          #update_attributes(:updated_at=>Time.now)
         end
       end
 
