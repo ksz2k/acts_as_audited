@@ -218,7 +218,7 @@ module ActsAsAudited
           write_audit(:action => 'update', :audited_changes => changes,
             :comment => audit_comment)
           # TODO option for this..
-          without_auditing { update_attributes(:updated_at=>Time.now) }
+          update_attributes(:updated_at=>Time.now)
         end
       end
 
