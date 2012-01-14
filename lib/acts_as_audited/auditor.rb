@@ -218,7 +218,6 @@ module ActsAsAudited
           write_audit(:action => 'update', :audited_changes => changes,
             :comment => audit_comment)
         end
-        
       end
 
       def audit_destroy
