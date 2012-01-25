@@ -50,7 +50,7 @@ module ActsAsAudited
       #
       def acts_as_audited(options = {})
         # don't allow multiple calls
-        return if self.included_modules.include?(ActsAsAudited::Auditor::InstanceMethods)
+        return if !self.table_exists? or self.included_modules.include?(ActsAsAudited::Auditor::InstanceMethods)
 
         options = {:protect => accessible_attributes.empty?}.merge(options)
 
@@ -74,13 +74,13 @@ module ActsAsAudited
           end
           before_destroy :require_comment if !options[:on] || (options[:on] && options[:on].include?(:destroy))
         end
-        
-        
+
+
         #if options[:has_attached_file]
           attr_accessor :audit_attachment
           unless accessible_attributes.empty? || options[:protect]
             attr_accessible :audit_attachment
-          end            
+          end
           self.has_attachment = Audit.has_attachment = options[:has_attached_file]
         #end
 
@@ -228,7 +228,7 @@ module ActsAsAudited
       def write_audit(attrs)
         attrs[:associated] = self.send(audit_associated_with) unless audit_associated_with.nil?
         #if self.has_attachment
-          attrs[:attachment] = audit_attachment 
+          attrs[:attachment] = audit_attachment
           self.audit_attachment = nil
         #end
         self.audit_comment = nil
