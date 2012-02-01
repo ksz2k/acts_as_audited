@@ -69,7 +69,7 @@ module ActsAsAudited
         self.audit_associated_with = options[:associated_with]
 
         if options[:comment_required]
-          if !options[:on] || (options[:on] && (options[:on].include?(:destroy)||options[:on].include?(:create)))
+          if !options[:on] || (options[:on] && (options[:on].include?(:update)||options[:on].include?(:create)))
             validates_presence_of :audit_comment, :if => :auditing_enabled
           end
           before_destroy :require_comment if !options[:on] || (options[:on] && options[:on].include?(:destroy))
@@ -214,7 +214,7 @@ module ActsAsAudited
       end
 
       def audit_update
-        unless (changes = audited_changes).empty? or audit_comment.nil?
+        if !((changes = audited_changes).empty? and audit_comment.nil?)
           write_audit(:action => 'update', :audited_changes => changes,
             :comment => audit_comment)
         end
