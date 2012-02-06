@@ -2,8 +2,8 @@ require 'set'
 
 require 'rubygems'
 require 'paperclip'
-  
-   
+
+
 
 # Audit saves the changes to ActiveRecord models.  It has the following attributes:
 #
@@ -20,13 +20,14 @@ class Audit < ActiveRecord::Base
   belongs_to :associated, :polymorphic => true
 
   before_create :set_version_number, :set_audit_user
-  
-  
+
+
   cattr_accessor :has_attachment
   include Paperclip::Glue
-  has_attached_file :attachment 
-  
-  
+  has_attached_file :attachment
+  attr_accessor :attachment_file_name, :attachment_file_size, :attachment_content_type
+
+
   serialize :audited_changes
 
   cattr_accessor :audited_class_names
