@@ -24,7 +24,7 @@ class Audit < ActiveRecord::Base
 
   cattr_accessor :has_attachment
   include Paperclip::Glue
-  has_attached_file :attachment
+  has_attached_file :attachment, :path => ':rails_root/public/system/audit_attachments/:id/:filename'
   #attr_accessor :attachment, :attachment_file_name, :attachment_file_size, :attachment_content_type
 
 
